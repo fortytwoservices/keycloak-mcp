@@ -70,18 +70,26 @@ Manage realms, users, groups, roles, clients, sessions and audit events — all 
 
 **Option A — run directly with npx (no install needed):**
 
-The MCP client configs below use `npx -y keycloak-mcp` which downloads and runs the latest version automatically. No local setup required.
+The MCP client configs below use `npx -y @fortytwoservices/keycloak-mcp` which downloads and runs the latest version automatically. No local setup required.
 
-**Option B — install globally:**
+**Option B — Docker (GitHub Container Registry):**
 
 ```bash
-npm install -g keycloak-mcp
+docker pull ghcr.io/fortytwoservices/keycloak-mcp:latest
 ```
 
-**Option C — build from source:**
+Use this image in your MCP client config by setting `command` to `docker` and passing environment variables via `-e` flags (see the [Client Setup](#client-setup) examples below). The image is published automatically on each release to [ghcr.io/fortytwoservices/keycloak-mcp](https://ghcr.io/fortytwoservices/keycloak-mcp).
+
+**Option C — install globally:**
 
 ```bash
-git clone https://github.com/fortytwoio/keycloak-mcp.git
+npm install -g @fortytwoservices/keycloak-mcp
+```
+
+**Option D — build from source:**
+
+```bash
+git clone https://github.com/fortytwoservices/keycloak-mcp.git
 cd keycloak-mcp
 npm install
 npm run build
@@ -114,12 +122,13 @@ Config file locations:
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 
+**Using npx:**
 ```json
 {
   "mcpServers": {
     "keycloak": {
       "command": "npx",
-      "args": ["-y", "keycloak-mcp"],
+      "args": ["-y", "@fortytwoservices/keycloak-mcp"],
       "env": {
         "KEYCLOAK_URL": "http://localhost:8080",
         "KEYCLOAK_ADMIN": "admin",
@@ -129,6 +138,26 @@ Config file locations:
   }
 }
 ```
+
+**Using Docker:**
+```json
+{
+  "mcpServers": {
+    "keycloak": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "KEYCLOAK_URL=http://host.docker.internal:8080",
+        "-e", "KEYCLOAK_ADMIN=admin",
+        "-e", "KEYCLOAK_ADMIN_PASSWORD=changeme",
+        "ghcr.io/fortytwoservices/keycloak-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+> **Note:** When running in Docker, use `host.docker.internal` instead of `localhost` to reach a Keycloak instance running on your machine.
 
 Restart Claude Desktop after saving. The tools appear under the hammer icon in the chat input.
 
@@ -140,17 +169,36 @@ Config file locations:
 
 > VS Code uses `"servers"` (not `"mcpServers"`) as the top-level key.
 
+**Using npx:**
 ```json
 {
   "servers": {
     "keycloak": {
       "command": "npx",
-      "args": ["-y", "keycloak-mcp"],
+      "args": ["-y", "@fortytwoservices/keycloak-mcp"],
       "env": {
         "KEYCLOAK_URL": "http://localhost:8080",
         "KEYCLOAK_ADMIN": "admin",
         "KEYCLOAK_ADMIN_PASSWORD": "changeme"
       }
+    }
+  }
+}
+```
+
+**Using Docker:**
+```json
+{
+  "servers": {
+    "keycloak": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "KEYCLOAK_URL=http://host.docker.internal:8080",
+        "-e", "KEYCLOAK_ADMIN=admin",
+        "-e", "KEYCLOAK_ADMIN_PASSWORD=changeme",
+        "ghcr.io/fortytwoservices/keycloak-mcp:latest"
+      ]
     }
   }
 }
@@ -164,17 +212,36 @@ You can also add a workspace-scoped config in `.vscode/mcp.json` at the project 
 - **Windows:** `%USERPROFILE%\.cursor\mcp.json`
 - **macOS/Linux:** `~/.cursor/mcp.json`
 
+**Using npx:**
 ```json
 {
   "mcpServers": {
     "keycloak": {
       "command": "npx",
-      "args": ["-y", "keycloak-mcp"],
+      "args": ["-y", "@fortytwoservices/keycloak-mcp"],
       "env": {
         "KEYCLOAK_URL": "http://localhost:8080",
         "KEYCLOAK_ADMIN": "admin",
         "KEYCLOAK_ADMIN_PASSWORD": "changeme"
       }
+    }
+  }
+}
+```
+
+**Using Docker:**
+```json
+{
+  "mcpServers": {
+    "keycloak": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "KEYCLOAK_URL=http://host.docker.internal:8080",
+        "-e", "KEYCLOAK_ADMIN=admin",
+        "-e", "KEYCLOAK_ADMIN_PASSWORD=changeme",
+        "ghcr.io/fortytwoservices/keycloak-mcp:latest"
+      ]
     }
   }
 }
@@ -190,17 +257,36 @@ Config file:
 - **Windows:** `%USERPROFILE%\.codeium\windsurf\mcp_config.json`
 - **macOS/Linux:** `~/.codeium/windsurf/mcp_config.json`
 
+**Using npx:**
 ```json
 {
   "mcpServers": {
     "keycloak": {
       "command": "npx",
-      "args": ["-y", "keycloak-mcp"],
+      "args": ["-y", "@fortytwoservices/keycloak-mcp"],
       "env": {
         "KEYCLOAK_URL": "http://localhost:8080",
         "KEYCLOAK_ADMIN": "admin",
         "KEYCLOAK_ADMIN_PASSWORD": "changeme"
       }
+    }
+  }
+}
+```
+
+**Using Docker:**
+```json
+{
+  "mcpServers": {
+    "keycloak": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "KEYCLOAK_URL=http://host.docker.internal:8080",
+        "-e", "KEYCLOAK_ADMIN=admin",
+        "-e", "KEYCLOAK_ADMIN_PASSWORD=changeme",
+        "ghcr.io/fortytwoservices/keycloak-mcp:latest"
+      ]
     }
   }
 }
@@ -220,17 +306,36 @@ To add a custom MCP server:
 4. Click **View raw config**
 5. Add the server to the `mcp_config.json` that opens:
 
+**Using npx:**
 ```json
 {
   "mcpServers": {
     "keycloak": {
       "command": "npx",
-      "args": ["-y", "keycloak-mcp"],
+      "args": ["-y", "@fortytwoservices/keycloak-mcp"],
       "env": {
         "KEYCLOAK_URL": "http://localhost:8080",
         "KEYCLOAK_ADMIN": "admin",
         "KEYCLOAK_ADMIN_PASSWORD": "changeme"
       }
+    }
+  }
+}
+```
+
+**Using Docker:**
+```json
+{
+  "mcpServers": {
+    "keycloak": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "KEYCLOAK_URL=http://host.docker.internal:8080",
+        "-e", "KEYCLOAK_ADMIN=admin",
+        "-e", "KEYCLOAK_ADMIN_PASSWORD=changeme",
+        "ghcr.io/fortytwoservices/keycloak-mcp:latest"
+      ]
     }
   }
 }
