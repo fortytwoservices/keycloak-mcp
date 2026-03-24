@@ -1,5 +1,5 @@
 {
-    "name": "keycloak-mcp",
+    "name": "@fortytwoservices/keycloak-mcp",
     "version": "1.0.0",
     "description": "Model Context Protocol (MCP) server for Keycloak Admin API — manage realms, users, groups, roles, clients, sessions and events via any MCP-compatible AI assistant.",
     "type": "module",
@@ -28,6 +28,13 @@
         "ai"
     ],
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fortytwoservices/keycloak-mcp.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.6.1",
         "zod": "^3.23.8"
